@@ -1,0 +1,16 @@
+@import 'modules/container';
+
+i.icon {
+    font-size: 2em;
+}
+
+//  blog.ejs: correct missing padding on first post; bug in Semantic UI?
+.ui.grid>.row>.ui.segment.column, .ui.grid>.ui.segment.column, .ui.page.grid.segment {
+    padding: 3em;
+    margin-bottom: 1rem;
+}
+
+//  blog.ejs: spacing between button and description
+.extra {
+    margin-top: 1.5em;
+}

@@ -1,0 +1,41 @@
+<!-- 
+    NOTE: it is possible to created a different route for the update request.
+    For example: action="/blog/:id/update"
+    But then we diverge from the RESTFUL pattern. Therefore install the extra
+    package method-override
+ -->
+<% include modules/_header %>
+
+<div class="ui container main text segment">
+    <div class="ui header huge">Edit: <%= postData.title %></div>
+    <form action="/blog/<%= postData._id %>?_method=PUT" method="POST" class="ui form">
+        <div class="field">
+            <label>Title</label>
+            <input  type="text" name="blogPost[title]" placeholder="Change the title"
+                    required value="<%= postData.title %>">
+        </div>
+        <div class="field">
+            <label for="">Change Image</label>
+            <input type="file" name="blogPost[image]" placeholder="Change the image">
+        </div>
+        <div class="field">
+            <label for="">Change blog post</label>
+            <textarea   required name="blogPost[body]" 
+                        placeholder="Write your updated thoughts here...">
+                        <%= postData.body %> 
+            </textarea>
+           <!-- 
+                textarea's don't have a value attribute
+                the value is specified between the tags
+            -->
+        </div>
+        <button class="ui button basic blue big" type="submit">Save changes</button>
+    </form>
+</div>
+<div class="ui container segment text">
+    <form action="/blog/<%= postData._id %>?_method=DELETE" method="POST" id="delete">
+        <button class="ui button red small">Delete post</button>
+    </form>    
+</div>
+
+<% include modules/_footer %>

@@ -1,0 +1,21 @@
+<% include modules/_header %>
+
+<div class="ui container segment text main">
+    <div class="ui header huge grey"><%= postData.title %></div>
+    <div class="ui top attached">
+        <div class="item">
+            <img src="<%= postData.image %>" alt="" class="ui image rounded centered">
+            <div class="content">
+                <div class="meta">
+                    <span class="meta"><%= postData.created.toDateString() %></span>
+                </div>
+                <div class="description">
+                    <p><%- postData.body %></p>
+                </div>
+            </div>
+            <a href="/blog/<%= postData._id %>/edit" class="ui button inverted orange">Edit</a>
+        </div>
+    </div>
+</div>
+
+<% include modules/_footer %>

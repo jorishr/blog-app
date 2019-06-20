@@ -1,0 +1,24 @@
+<% include modules/_header %>
+
+<div class="ui container main text segment">
+    <div class="ui header huge">Create a new blog post here</div>
+    <form action="/blog" method="POST" class="ui form">
+        <div class="field">
+            <label>Title</label>
+            <input  type="text" name="blogPost[title]" placeholder="Add a title"
+                    required>
+        </div>
+        <div class="field">
+            <label for="">Image</label>
+            <input type="file" name="blogPost[image]" placeholder="Add an image">
+        </div>
+        <div class="field">
+            <label for="">New blog post</label>
+            <textarea   required name="blogPost[body]" 
+                        placeholder="Write your thoughts here..."></textarea> 
+        </div>
+        <button class="ui button basic blue big" type="submit">publish</button>
+    </form>
+</div>
+
+<% include modules/_footer %>

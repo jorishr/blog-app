@@ -1,0 +1,25 @@
+<% include modules/_header %>
+<div class="ui container main">
+    <div class="ui header huge blue">
+        Browse through all the notes made during the web development learning process
+    </div>
+</div> 
+<div class="ui doubling stackable grid container">
+    <% postData.forEach(post => { %>
+    <div class="ui column raised very padded text container segment">
+        <a href="/blog/<%= post._id %>" class="ui header"><%= post.title %></a>
+        <div class="ui meta"><span><%= post.created.toDateString() %></span></div>
+        <div class="description">
+            <p class="content"><%- post.body.substring(0, 200) %>...</p>  
+        </div>
+        <div class="extra">
+            <a  class="ui floated button inverted blue"
+            href="/blog/<%= post._id %>">Read more
+            <i class="right chevron icon small"></i>
+            </a>
+        </div>
+    </div>
+</div>
+    <% }); %>
+
+<% include modules/_footer %>

@@ -1,0 +1,15 @@
+.container.main {
+  margin-top: 7rem; }
+
+.container.grid {
+  margin-top: 3rem; }
+
+i.icon {
+  font-size: 2em; }
+
+.ui.grid > .row > .ui.segment.column, .ui.grid > .ui.segment.column, .ui.page.grid.segment {
+  padding: 3em;
+  margin-bottom: 1rem; }
+
+.extra {
+  margin-top: 1.5em; }
