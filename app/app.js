@@ -1,12 +1,17 @@
-const   path        = require('path'),
-        express     = require('express'),
-        app         = express(),
-        port        = 3000,
-        bodyParser  = require('body-parser'),
-        sanitizer   = require('express-sanitizer'),
-        mongoose    = require('mongoose'),
-        db          = mongoose.connection,
-        methodOverride = require('method-override');
+const   path                    = require('path'),
+        express                 = require('express'),
+        app                     = express(),
+        port                    = 3000,
+        bodyParser              = require('body-parser'),
+        sanitizer               = require('express-sanitizer'),
+        mongoose                = require('mongoose'),
+        db                      = mongoose.connection,
+        methodOverride          = require('method-override'),
+        passport                = require('passport'),
+        User                    = require('./models/user'),
+        LocalStrategy           = require('passport-local').Strategy,
+        passportLocalMongoose   = require('passport-local-mongoose'),
+        expressSession          = require('express-session');
         
 //  BASIC EXPRESS/MONGO CONFIG*/
 
@@ -16,8 +21,23 @@ db.on('error', console.error.bind(console, 'connection error:'));
 app.listen(port, () => console.log(`Express Server is listening on port ${port}`));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(methodOverride('_method'));
+app.use(methodOverride('_method')); //  for put/delete requests
 app.use(sanitizer());   //  after bodyParser
+
+app.use(expressSession({
+    secret: 'This is a secret encoding',
+    resave: false,
+    saveUninitialized: false
+}));
+
+passport.use(new LocalStrategy(User.authenticate()));   //  method provided by passport-local-mongoose
+
+app.use(passport.initialize()); 
+app.use(passport.session());
+
+passport.serializeUser(User.serializeUser());   //  reading session data, encode
+passport.deserializeUser(User.deserializeUser());   //  decode
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -128,3 +148,53 @@ app.delete('/blog/:id', (req, res) => {
             }
     });
 });
+
+//  SECRET ROUTE
+app.get('/secret', isLoggedIn, (req, res) => {
+    res.render('secret');
+});   
+
+//  ==============
+//  AUTH ROUTES
+
+//  register
+
+app.get('/register', (req, res) => {
+    res.render('register');
+})
+
+app.post('/register', function(req, res, next) {
+    console.log('registering user');
+    User.register(new User({username: req.body.username}), req.body.password, function(err) {
+        if (err) {
+            console.log('error while user register!', err);
+            return next(err);
+        }
+        console.log('user registered!');
+        res.redirect('/');
+    });
+});
+
+//  login/logout
+
+app.get('/login', (req, res) =>{
+    res.render('login');
+});
+
+app.post('/login', passport.authenticate('local'), (req, res, next) => {
+    console.log('user login success');
+    res.redirect('/secret');
+});
+
+app.get('/logout', function(req, res) {
+    req.logout();
+    console.log('logout success');
+    res.redirect('/');
+});
+
+function isLoggedIn (req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    };
+    res.redirect('/');
+};

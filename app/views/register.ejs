@@ -1,0 +1,20 @@
+<% include modules/_header %>
+
+<div class="ui container main text segment">
+    <div class="ui header huge">Create a new account now</div>
+        <form action="/register" method="POST" class="ui form">
+            <div class="field">
+                <label>Username</label>
+                <input  type="text" name="username" placeholder="add a username"
+                        required>
+            </div>
+            <div class="field">
+                <label for="">Password</label>
+                <input  type="password" name="password" placeholder="add a password"
+                        required>
+            </div>
+            <button class="ui button basic blue big" type="submit">register</button>
+        </form>
+
+</div>
+<% include modules/_footer %>
